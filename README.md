@@ -1,7 +1,7 @@
 # 石上生花｜AR 原型（第一階段）
 
 技術：HTML + CSS + JavaScript、A-Frame 1.5.0（3D）、MindAR 1.2.5（圖片辨識）。無需安裝任何套件。
-
+https://hadknown.github.io/stone-bloom-ar/
 ## 一、專案結構
 
 ```
