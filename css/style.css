@@ -4,10 +4,12 @@ html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background: #111;
   font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   color: #fff;
 }
+
+html { background: #111; }
+body { background: transparent; }
 
 /* 開始 / 錯誤畫面：蓋在最上層 */
 .panel {
