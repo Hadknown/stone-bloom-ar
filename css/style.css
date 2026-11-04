@@ -1,0 +1,67 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #111;
+  font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  color: #fff;
+}
+
+/* 開始 / 錯誤畫面：蓋在最上層 */
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: rgba(20, 30, 22, 0.92);
+}
+.panel h1 { margin: 0 0 4px; font-size: 32px; letter-spacing: 4px; }
+.panel .sub { margin: 0 0 20px; color: #9fd6a0; }
+.panel p { max-width: 320px; line-height: 1.6; }
+
+button {
+  padding: 14px 32px;
+  font-size: 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #4caf50;
+  color: #fff;
+}
+button:disabled { background: #555; }
+button:active:not(:disabled) { background: #3d8b40; }
+
+.error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(220, 70, 70, 0.25);
+  color: #ffd0d0;
+  font-size: 14px;
+  white-space: pre-line;
+  text-align: left;
+}
+
+/* 相機畫面上的提示列 */
+#hud {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 5;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+#hud p { margin: 0; font-size: 15px; text-align: center; }
+#hud.found p { color: #b6f5b0; }
+#stopBtn { padding: 8px 20px; font-size: 14px; background: rgba(255, 255, 255, 0.2); }
+
+[hidden] { display: none !important; }

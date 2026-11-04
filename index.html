@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>石上生花｜AR 原型</title>
+  <link rel="stylesheet" href="./css/style.css">
+
+  <!-- 3D 引擎：A-Frame（固定版本，避免日後更新造成相容問題） -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- 圖像辨識：MindAR（A-Frame 版） -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body>
+
+  <!--
+    AR 場景
+    - imageTargetSrc：辨識資料（.mind 檔）
+    - autoStart: false → 不自動開相機，改由按鈕觸發（手機需要使用者操作才能開相機）
+    - uiLoading/uiScanning/uiError: no → 關掉 MindAR 內建介面，改用我們自己的
+  -->
+  <a-scene
+    id="scene"
+    mindar-image="imageTargetSrc: ./assets/targets/card.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
+    color-space="sRGB"
+    renderer="colorManagement: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+
+    <!-- 燈光 -->
+    <a-light type="ambient" intensity="1"></a-light>
+    <a-light type="directional" position="0.5 1 1" intensity="1.2"></a-light>
+
+    <!-- 相機（MindAR 會自動控制它，不要加 look-controls） -->
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!--
+      圖片目標 #0
+      座標：圖片中心 = 原點；圖片寬度 = 1 單位；X 向右、Y 向上（沿圖片）、Z 朝向使用者。
+      圖片離開視野時，MindAR 會自動隱藏這個 entity（也就是植物消失）。
+    -->
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
+
+      <!-- 旋轉 90° 讓植物的「上方(Y)」變成「朝向使用者(Z)」，也就是從圖片長出來 -->
+      <a-entity id="plant" rotation="90 0 0">
+
+        <!-- 子層負責輕輕搖擺（不跟外層的 90° 旋轉衝突） -->
+        <a-entity animation="property: rotation; from: 0 0 -3; to: 0 0 3; dir: alternate; dur: 1800; easing: easeInOutSine; loop: true">
+
+          <!-- 土 -->
+          <a-cylinder position="0 0.02 0" radius="0.12" height="0.04" color="#6b4a2f"></a-cylinder>
+
+          <!-- 莖 -->
+          <a-cylinder position="0 0.215 0" radius="0.018" height="0.35" color="#3f8f3a"></a-cylinder>
+
+          <!-- 葉片：把球壓扁成橢圓 -->
+          <a-sphere position="0.10 0.22 0"    rotation="0 0 -35"  radius="0.1" scale="1 0.28 0.6" color="#4caf50"></a-sphere>
+          <a-sphere position="-0.10 0.30 0"   rotation="0 0 35"   radius="0.1" scale="1 0.28 0.6" color="#43a047"></a-sphere>
+          <a-sphere position="0.07 0.34 0.07"  rotation="0 -45 -30" radius="0.1" scale="1 0.28 0.6" color="#66bb6a"></a-sphere>
+          <a-sphere position="-0.07 0.38 -0.07" rotation="0 -45 30"  radius="0.1" scale="1 0.28 0.6" color="#4caf50"></a-sphere>
+
+          <!-- 頂端嫩芽 -->
+          <a-sphere position="0 0.41 0" radius="0.045" color="#8bd67f"></a-sphere>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+  </a-scene>
+
+  <!-- 開始畫面 -->
+  <div id="overlay" class="panel">
+    <h1>石上生花</h1>
+    <p class="sub">AR 石板杯墊・原型測試</p>
+    <p>按下按鈕後允許使用相機，再將鏡頭對準圖騰圖片。</p>
+    <button id="startBtn" disabled>載入中…</button>
+    <p id="errorMsg" class="error" hidden></p>
+  </div>
+
+  <!-- 相機啟動後的操作提示 -->
+  <div id="hud" hidden>
+    <p id="hint">請將鏡頭對準圖騰，保持光線充足、畫面穩定</p>
+    <button id="stopBtn">關閉相機</button>
+  </div>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
